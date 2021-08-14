@@ -1,0 +1,44 @@
+<html>
+	<head>
+		<title>Elements</title>
+	</head>
+	<body>
+		<div id='hello_id'>hello</div>
+		<div id='world_id'>&nbsp;world&nbsp;</div>
+		<div id='output'></div>
+		<button id='first'>First</button>
+		<div id='second_div'>
+			<button id='second'>Second</button>
+		</div>
+		<div>
+			<input type='text' id='third_text' />
+			<button id='third'>Thrid</button>
+		</div>
+		<div>
+			<input type='text' id='fourth_text' value='fourth textbox' />
+		</div>
+		<div id='parent'>
+			<div id='child'>child</div>
+		</div>
+		<div id='list'>
+			<ul>
+				<li>first_li</li>
+				<li>second_li</li>
+				<li>third_li</li>
+				<li>fourth_li</li>
+			</ul>
+		</div>
+		<script>
+			function setOutputTo(text) {
+				document.getElementById('output').innerText = text;
+			}
+
+			document.getElementById('first').onclick = () => setOutputTo('first');
+			document.getElementById('second').onclick = () => setOutputTo('second');
+			document.getElementById('third').onclick = () => {
+				let value = document.getElementById('third_text').value;
+				setOutputTo(value)
+			};
+		</script>
+	</body>
+</html>
