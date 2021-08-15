@@ -8,6 +8,12 @@ setup(
     author='Byran Wills-Heath',
     author_email='byran@adgico.co.uk',
     license='MIT',
-    packages=['screenplay_selenium'],
+    packages=[
+        'screenplay_selenium',
+        'screenplay_selenium.abilities',
+        'screenplay_selenium.actions',
+        'screenplay_selenium.matchers',
+        'screenplay_selenium.tasks',
+    ],
     zip_safe=False
 )
