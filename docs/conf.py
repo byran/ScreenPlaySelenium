@@ -19,7 +19,7 @@ import xml.etree.ElementTree as ET
 
 # -- Project information -----------------------------------------------------
 
-project = 'Python-ScreenPlay'
+project = 'ScreenPlaySelenium'
 copyright = '2020, Byran Wills-Heath'
 author = 'Byran Wills-Heath'
 
