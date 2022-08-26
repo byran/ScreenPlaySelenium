@@ -13,6 +13,9 @@ class _find_elements_filter(find_base_action):
     def perform_as(self, actor: Actor):
         elements = actor.attempts_to(self._original)
 
+        if elements is None:
+            return None
+
         filtered_elements = []
         for element in elements:
             if isinstance(self._filter, find_redirect):
@@ -20,7 +23,7 @@ class _find_elements_filter(find_base_action):
             if actor.attempts_to(self._filter) is not None:
                 filtered_elements.append(element)
 
-        return filtered_elements
+        return filtered_elements if len(filtered_elements) > 0 else None
 
 
 class find_elements(find_redirect):
