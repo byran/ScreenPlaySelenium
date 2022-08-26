@@ -1,6 +1,7 @@
 import os
 import sys
 from typing import List
+from types import FunctionType
 from screenplay import Ability, Actor
 from selenium.webdriver import Chrome
 from selenium.webdriver.chrome.options import Options as ChromeOptions
@@ -34,6 +35,7 @@ class WaitingWebDriver:
 class browse_the_web(Ability):
     def __init__(self, create_browser_function: type):
         self._create_browser_function = create_browser_function
+        self._created_callback = None
         self._webdriver = None
         self.wait_timeout = 10
 
@@ -42,14 +44,19 @@ class browse_the_web(Ability):
             self._webdriver.quit()
             self._webdriver = None
 
-    @property
-    def browser(self) -> WebDriver:
+    def after_browser_started(self, created_callback: FunctionType):
+        self._created_callback = created_callback
+        return self
+
+    def browser(self, actor: Actor) -> WebDriver:
         if self._webdriver is None:
             self._webdriver = self._create_browser_function()
+            if self._created_callback is not None:
+                self._created_callback(actor)
         return self._webdriver
 
-    def waiting_browser(self, ignored_exceptions=None) -> WaitingWebDriver:
-        return WaitingWebDriver(self.browser, self.wait_timeout, ignored_exceptions)
+    def waiting_browser(self, actor: Actor, ignored_exceptions=None) -> WaitingWebDriver:
+        return WaitingWebDriver(self.browser(actor), self.wait_timeout, ignored_exceptions)
 
     @staticmethod
     def _create_Chrome_browser():
@@ -78,8 +85,8 @@ class browse_the_web(Ability):
 
 
 def browser_for(actor: Actor) -> WebDriver:
-    return actor.ability(browse_the_web).browser
+    return actor.ability(browse_the_web).browser(actor)
 
 
 def waiting_browser_for(actor: Actor, ignored_exceptions=None) -> WaitingWebDriver:
-    return actor.ability(browse_the_web).waiting_browser(ignored_exceptions=ignored_exceptions)
+    return actor.ability(browse_the_web).waiting_browser(actor, ignored_exceptions=ignored_exceptions)
