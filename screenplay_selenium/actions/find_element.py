@@ -1,10 +1,9 @@
 from screenplay import Actor, log_message
-from screenplay_selenium.abilities.browse_the_web import waiting_browser_for
-from selenium.common.exceptions import StaleElementReferenceException, NoSuchElementException, TimeoutException
-from ._find_base_action import find_base_action
+from selenium.common.exceptions import TimeoutException
+from ._find_redirect import find_redirect
 
 
-class find_element(find_base_action):
+class find_element(find_redirect):
     def __init__(self, locator):
         super().__init__()
         self._locator = locator
@@ -18,8 +17,7 @@ class find_element(find_base_action):
     def perform_as(self, actor: Actor):
         element = None
         try:
-            element = waiting_browser_for(actor, (StaleElementReferenceException, NoSuchElementException)) \
-                .find_element(*self._locator)
+            element = self._search_location(actor).find_element(*self._locator)
         except TimeoutException:
             pass
 

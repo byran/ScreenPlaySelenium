@@ -1,10 +1,29 @@
 from screenplay import Actor, log_message
-from screenplay_selenium.abilities.browse_the_web import waiting_browser_for
-from selenium.common.exceptions import StaleElementReferenceException, NoSuchElementException, TimeoutException
+from selenium.common.exceptions import TimeoutException
 from ._find_base_action import find_base_action
+from ._find_redirect import find_redirect
 
 
-class find_elements(find_base_action):
+class _find_elements_filter(find_base_action):
+    def __init__(self, original: find_base_action, filter: find_redirect):
+        super().__init__()
+        self._original = original
+        self._filter = filter
+
+    def perform_as(self, actor: Actor):
+        elements = actor.attempts_to(self._original)
+
+        filtered_elements = []
+        for element in elements:
+            if isinstance(self._filter, find_redirect):
+                self._filter.in_WebElement(element)
+            if actor.attempts_to(self._filter) is not None:
+                filtered_elements.append(element)
+
+        return filtered_elements
+
+
+class find_elements(find_redirect):
     def __init__(self, locator):
         super().__init__()
         self._locator = locator
@@ -14,12 +33,14 @@ class find_elements(find_base_action):
         self._id = id
         return self
 
+    def only_elements_where_something_is_found_using(self, filter: find_redirect):
+        return _find_elements_filter(self, filter)
+
     @log_message("Finding elements '{self._locator[1]}' and storing as '{self._id}'")
     def perform_as(self, actor: Actor):
         elements = None
         try:
-            elements = waiting_browser_for(actor, (StaleElementReferenceException, NoSuchElementException)) \
-                .find_elements(*self._locator)
+            elements = self._search_location(actor).find_elements(*self._locator)
         except TimeoutException:
             pass
 
