@@ -8,11 +8,6 @@ class find_element_with_locator_and_text(find_redirect):
         super().__init__()
         self._locator = locator
         self._text = text
-        self._id = None
-
-    def and_store_as(self, id: str):
-        self._id = id
-        return self
 
     @log_message('Finding element {self._locator} with text "{self._text}"')
     def perform_as(self, actor: Actor):
@@ -23,8 +18,5 @@ class find_element_with_locator_and_text(find_redirect):
             pass
 
         element = next((e for e in elements if e.text.strip() == self._text), None)
-
-        if self._id is not None:
-            actor.state[self._id].set(element)
 
         return element

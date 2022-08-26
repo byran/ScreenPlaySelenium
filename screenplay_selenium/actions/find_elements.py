@@ -30,24 +30,16 @@ class find_elements(find_redirect):
     def __init__(self, locator):
         super().__init__()
         self._locator = locator
-        self._id = 'Id not specified'
-
-    def and_store_as(self, id: str):
-        self._id = id
-        return self
 
     def only_elements_where_something_is_found_using(self, filter: find_redirect):
         return _find_elements_filter(self, filter)
 
-    @log_message("Finding elements '{self._locator[1]}' and storing as '{self._id}'")
+    @log_message("Finding elements '{self._locator[1]}'")
     def perform_as(self, actor: Actor):
         elements = None
         try:
             elements = self._search_location(actor).find_elements(*self._locator)
         except TimeoutException:
             pass
-
-        if self._id is not None:
-            actor.state[self._id].set(elements)
 
         return elements
