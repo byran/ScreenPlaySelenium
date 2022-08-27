@@ -1,10 +1,11 @@
 from screenplay import Actor, log_message
 from selenium.common.exceptions import TimeoutException
 from ._find_base_action import find_base_action
+from ._find_and_store_as import find_and_store_as
 from ._find_redirect import find_redirect
 
 
-class _find_elements_filter(find_base_action):
+class _find_elements_filter(find_and_store_as):
     def __init__(self, original: find_base_action, filter: find_redirect):
         super().__init__()
         self._original = original
