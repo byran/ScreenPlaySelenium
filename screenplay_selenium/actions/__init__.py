@@ -1,5 +1,6 @@
 from .click_on_sub_element import click_on_sub_element
 from .click_on import click_on
+from .drag import drag
 from .enter_text import enter_text
 from .find_element_with_locator_and_text import find_element_with_locator_and_text
 from .find_element import find_element
@@ -18,6 +19,7 @@ from .value_of import value_of
 __all__ = [
     'click_on_sub_element',
     'click_on',
+    'drag',
     'enter_text',
     'find_element_with_locator_and_text',
     'find_element',
