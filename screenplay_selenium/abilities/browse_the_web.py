@@ -3,8 +3,9 @@ import sys
 from typing import List
 from types import FunctionType
 from screenplay import Ability, Actor
-from selenium.webdriver import Chrome
+from selenium.webdriver import Chrome, Firefox
 from selenium.webdriver.chrome.options import Options as ChromeOptions
+from selenium.webdriver.firefox.options import Options as FirefoxOptions
 from selenium.webdriver.remote.webdriver import WebDriver, WebElement
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
@@ -82,6 +83,17 @@ class browse_the_web(Ability):
     @staticmethod
     def using_remote_Chrome():
         return browse_the_web(browse_the_web._create_remote_Chrome_browser)
+
+    @staticmethod
+    def _create_Firefox_browser():
+        firefox_options = FirefoxOptions()
+        if os.getenv('HEADLESS_BROWSER') != 'False':
+            firefox_options.headless = True
+        return Firefox(options=firefox_options)
+
+    @staticmethod
+    def using_Firefox():
+        return browse_the_web(browse_the_web._create_Firefox_browser)
 
 
 def browser_for(actor: Actor) -> WebDriver:
