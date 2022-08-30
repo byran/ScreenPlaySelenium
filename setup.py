@@ -15,6 +15,7 @@ setup(
         'screenplay_selenium.matchers',
         'screenplay_selenium.tasks',
     ],
+    include_package_data=True,
     zip_safe=False,
     install_requires=[
         'selenium >= 3.141.0',
