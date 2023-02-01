@@ -19,6 +19,6 @@ setup(
     zip_safe=False,
     install_requires=[
         'selenium >= 3.141.0',
-        'ScreenPlay@git+git://github.com/byran/ScreenPlay@master#ogg=ScreenPlay'
+        'ScreenPlay@git+https://github.com/byran/ScreenPlay@master#ogg=ScreenPlay'
     ]
 )
